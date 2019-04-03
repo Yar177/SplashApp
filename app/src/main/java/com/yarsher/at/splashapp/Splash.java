@@ -1,18 +1,27 @@
 package com.yarsher.at.splashapp;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Splash extends AppCompatActivity {
+public class Splash extends Activity {
 
     int i;
     String getURL = "http://127.0.0.1:8980/myserver/bigfile.txt";
@@ -28,10 +37,28 @@ public class Splash extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         if (haveNetworkConnection()){
-            new HttpDownLoad().execute();
+            new HttpDownload().execute();
         }else {
             noConnection();
         }
+    }
+
+    private boolean haveNetworkConnection() {
+        boolean HaveConnectedWifi = false;
+        boolean HaveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo)
+        {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    HaveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    HaveConnectedMobile = true;
+        }
+        return HaveConnectedWifi || HaveConnectedMobile;
     }
 
     public class HttpDownload extends AsyncTask<Void, String, Void>{
@@ -58,9 +85,9 @@ public class Splash extends AppCompatActivity {
                 conn.disconnect();
                 if (status == HttpURLConnection.HTTP_NO_CONTENT){
                     //server is reachable => initiate the download
-                    publishProgress("Reachable", 0);
-                    in = OppenHttpConnection(getURL);
-                    InputStream isr = new InputStream(in);
+                    publishProgress("Reachable", "0");
+                    in = OpenHttpConnection(getURL);
+                    InputStreamReader isr = new InputStreamReader(in);
                     int charRead;
                     char[] inputBuffer = new char[BUFFER_SIZE];
                     while ((charRead = isr.read(inputBuffer))>0) {
@@ -127,6 +154,48 @@ public class Splash extends AppCompatActivity {
             throw new IOException("Error connecting");
         }
         return in;
+    }
+
+
+    public void noConnection() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Connection");
+        alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+        alertDialog.setMessage("Data connection not available. Please restart.");
+        alertDialog.setCancelable(false);
+        alertDialog.setButton("Exit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            } });
+        alertDialog.show();
+    }
+
+    public void failedReach() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Connection");
+        alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+        alertDialog.setMessage("Connection available, but server could not be reached. Please restart.");
+        alertDialog.setCancelable(false);
+        alertDialog.setButton("Exit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            } });
+        alertDialog.show();
+    }
+
+    public void failedDownload() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Connection");
+        alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+        alertDialog.setMessage("Connection available, but downloading failed. Please restart.");
+        alertDialog.setCancelable(false);
+        alertDialog.setButton("Exit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            } });
+        alertDialog.show();
+
     }
 
 
