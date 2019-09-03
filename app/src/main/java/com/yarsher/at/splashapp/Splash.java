@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,12 +23,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static android.content.ContentValues.TAG;
+
 public class Splash extends Activity {
 
 
     int i;
 
-    String getURL = "http://www.your-server.com/english-proper-names.txt";
+    String getURL = "https://raw.githubusercontent.com/dominictarr/random-name/master/first-names.txt";
     String ip204 =  "https://connectivitycheck.gstatic.com/generate_204";
 
     public static int ConnectTimeout = 10000;
@@ -96,23 +99,24 @@ public class Splash extends Activity {
                 if (status == HttpURLConnection.HTTP_NO_CONTENT) {
 
 
-                    // Server is reachabile, so initiate the download
-//                    publishProgress("Connecting:", "0");
-//                    in = OpenHttpConnection(getURL);
-//                    InputStreamReader isr = new InputStreamReader(in);
-//                    int charRead;
-//                    char[] inputBuffer = new char[BUFFER_SIZE];
-//                    while ((charRead = isr.read(inputBuffer))>0) {
-//                        //---convert the chars to a String---
-//                        String readString = String.copyValueOf(inputBuffer, 0, charRead);
-//                        fromServer += readString;
-//                        inputBuffer = new char[BUFFER_SIZE];
-//                        //---update the progress
-//                        float ratio = (fromServer.length() / fsize) * 100;
-//                        int num = (int) ratio;
-//                        publishProgress("Connecting: " + String.valueOf(num) + "%", String.valueOf(num));
-//                    }
-//                    in.close();
+//                     Server is reachabile, so initiate the download
+                    publishProgress("Connecting:", "0");
+                    in = OpenHttpConnection(getURL);
+                    InputStreamReader isr = new InputStreamReader(in);
+                    int charRead;
+                    char[] inputBuffer = new char[BUFFER_SIZE];
+                    while ((charRead = isr.read(inputBuffer))>0) {
+                        //---convert the chars to a String---
+                        String readString = String.copyValueOf(inputBuffer, 0, charRead);
+                        fromServer += readString;
+                        inputBuffer = new char[BUFFER_SIZE];
+                        //---update the progress
+                        float ratio = (fromServer.length() / fsize) * 100;
+                        int num = (int) ratio;
+                        publishProgress("Connecting: " + String.valueOf(num) + "%", String.valueOf(num));
+                        Log.d(TAG, "doInBackground: " + "Connecting: " + String.valueOf(num) + "%");
+                    }
+                    in.close();
 
 
 
@@ -140,7 +144,9 @@ public class Splash extends Activity {
 
         @Override
         protected void onProgressUpdate(String... item) {
+            Log.d(TAG, "onProgressUpdate: called");
             TextView txt = (TextView) findViewById(R.id.text);
+            txt.setTextColor(getColor(R.color.colorAccent));
             txt.setText(item[0]);
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.progBar);
             int num = Integer.parseInt(item[1]);
