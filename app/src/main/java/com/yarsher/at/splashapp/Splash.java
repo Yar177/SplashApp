@@ -44,9 +44,9 @@ public class Splash extends Activity {
         this.setContentView(R.layout.activity_splash);
 
         // Setup the ActionBar and the Spinner in the ActionBar
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setSubtitle("Practical Android");
-        getActionBar().setTitle("Splash");
+//        getActionBar().setDisplayShowTitleEnabled(true);
+//        getActionBar().setSubtitle("Practical Android");
+//        getActionBar().setTitle("Splash");
 
         if (haveNetworkConnection()) {
             new HttpDownload().execute();

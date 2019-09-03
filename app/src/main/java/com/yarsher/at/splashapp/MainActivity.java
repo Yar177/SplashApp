@@ -13,10 +13,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Setup the ActionBar and the Spinner in the ActionBar
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setSubtitle("Practical Android");
-        getActionBar().setTitle("Splash");
+//        // Setup the ActionBar and the Spinner in the ActionBar
+//        getActionBar().setDisplayShowTitleEnabled(true);
+//        getActionBar().setSubtitle("Practical Android");
+//        getActionBar().setTitle("Splash");
     }
 
     @Override
