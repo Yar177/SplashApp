@@ -28,7 +28,7 @@ public class Splash extends Activity {
     int i;
 
     String getURL = "http://www.your-server.com/english-proper-names.txt";
-    String ip204 =  "http://www.your-server.com/return204.php";
+    String ip204 =  "https://connectivitycheck.gstatic.com/generate_204";
 
     public static int ConnectTimeout = 10000;
     public static int ReadTimeout = 10000;
@@ -94,23 +94,28 @@ public class Splash extends Activity {
                 in.close();
                 conn.disconnect();
                 if (status == HttpURLConnection.HTTP_NO_CONTENT) {
+
+
                     // Server is reachabile, so initiate the download
-                    publishProgress("Connecting:", "0");
-                    in = OpenHttpConnection(getURL);
-                    InputStreamReader isr = new InputStreamReader(in);
-                    int charRead;
-                    char[] inputBuffer = new char[BUFFER_SIZE];
-                    while ((charRead = isr.read(inputBuffer))>0) {
-                        //---convert the chars to a String---
-                        String readString = String.copyValueOf(inputBuffer, 0, charRead);
-                        fromServer += readString;
-                        inputBuffer = new char[BUFFER_SIZE];
-                        //---update the progress
-                        float ratio = (fromServer.length() / fsize) * 100;
-                        int num = (int) ratio;
-                        publishProgress("Connecting: " + String.valueOf(num) + "%", String.valueOf(num));
-                    }
-                    in.close();
+//                    publishProgress("Connecting:", "0");
+//                    in = OpenHttpConnection(getURL);
+//                    InputStreamReader isr = new InputStreamReader(in);
+//                    int charRead;
+//                    char[] inputBuffer = new char[BUFFER_SIZE];
+//                    while ((charRead = isr.read(inputBuffer))>0) {
+//                        //---convert the chars to a String---
+//                        String readString = String.copyValueOf(inputBuffer, 0, charRead);
+//                        fromServer += readString;
+//                        inputBuffer = new char[BUFFER_SIZE];
+//                        //---update the progress
+//                        float ratio = (fromServer.length() / fsize) * 100;
+//                        int num = (int) ratio;
+//                        publishProgress("Connecting: " + String.valueOf(num) + "%", String.valueOf(num));
+//                    }
+//                    in.close();
+
+
+
                 } else {
                     publishProgress("Not Reachable", "0");
                     failedReach();
@@ -125,8 +130,8 @@ public class Splash extends Activity {
         @Override
         protected void onPostExecute(Void unused) {
 
-            startActivity(new Intent(Splash.this, MainActivity.class));
-            finish();
+//            startActivity(new Intent(Splash.this, MainActivity.class));
+//            finish();
         }
 
         @Override

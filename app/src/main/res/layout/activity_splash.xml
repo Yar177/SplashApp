@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/title"
         android:layout_centerInParent="true"
-        android:text="Android Development"
+        android:text="Android ConnectivityCheck"
         android:textColor="#111"
         android:textSize="34sp"
         android:gravity="center"
@@ -48,11 +48,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="65.0dip"
         android:text="Connecting"
-        android:textColor="#111111"
+        android:textColor="#ccc"
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="sans"
-
         />
 
 </RelativeLayout>
